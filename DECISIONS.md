@@ -1,0 +1,13 @@
+# Decisions and experiments
+
+Actual development: 2026-10-16.
+
+1. Choose original TLC Parquet over UCI prepared aggregates: nullable meter records, signed adjustments, partition errors and a useful zone join expose operational decisions. Start with one small month, not the entire multi-year archive. It remains historical data.
+2. Use SQLite, PyArrow and a single worker rather than Dagster/Airflow infrastructure within this Mac's2GB Docker VM. Borrow execution/lineage concepts with explicit attribution. The process file lock, transactional claims and lifecycle checks are part of that single-host design; distributed coordination is out of scope.
+3. Make source SHA + lookup SHA + partition + pipeline/rule version the ingestion identity. Checkpoints commit counters, staged aggregates and physical-row evidence together. Only a complete normal execution moves the published pointer. Exact monetary cents use Decimal half-up, with defensive per-row and input-size bounds.
+4. Preserve questionable observed values as warnings where possible. Quarantine the two out-of-partition pickup records; retain signed amounts, unknown-zone identifiers, February dropoffs after January pickups and extreme distances with visible interpretation limits. All rejected observations persist separately; UI examples are bounded and rejection-first.
+5. Keep operational fault experiments explicitly simulated and isolated. Backoff is bounded to three automatic attempts per cycle; only terminal failure emits an acknowledgment-required local alert. Manual retry preserves prior cycles. No outbound messages or repair automation.
+6. A prototype released its lock too early on stop, could claim attempt4 after restart, lost schedule settings, misclassified corrupt schema, let EOF evade persistent faults and allowed experiments to publish. Independent probes reproduced these before acceptance. Claude's bounded corrective run was incomplete; lead corrections and focused independent regression checks closed them. A final review found checkpoint database errors incorrectly classified as permanent source errors; narrowed the catch and verified retry/counter accuracy.
+7. An initial browser retry click raced smooth scrolling. Evidence selection now scrolls instantly. Verification waits for actual health after image recreation; Docker start returning does not establish HTTP readiness.
+
+Alternatives not chosen: data warehouse/distributed queue (resource and operational overhead without a demonstrated need), automatically dropping outliers (would hide actual quality questions), externally delivered alerts (unauthorized scope), AI classification (2022 theme is software/data engineering).

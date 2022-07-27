@@ -1,0 +1,40 @@
+name: portfolio-release-2022-relay
+services:
+  app:
+    build: .
+    image: portfolio-release-2022-relay:local
+    ports:
+      - "127.0.0.1:${RELAY_PORT:-8282}:8000"
+    environment:
+      RELAY_DB: /state/relay.sqlite
+      RELAY_SOURCE_DIR: /sources
+      RELAY_AUTO_START: "${RELAY_AUTO_START:-1}"
+      RELAY_SCAN_SECONDS: "${RELAY_SCAN_SECONDS:-300}"
+      RELAY_RETRY_SECONDS: "${RELAY_RETRY_SECONDS:-5}"
+    volumes:
+      - relay-state:/state
+      - ./data/raw:/sources:ro
+    networks:
+      - relay
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 64
+    mem_limit: 512m
+    cpus: 1.0
+    restart: unless-stopped
+    stop_grace_period: 60s
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 4s
+      retries: 5
+      start_period: 8s
+networks:
+  relay:
+    name: portfolio-release-2022-relay-network
+volumes:
+  relay-state:
+    name: portfolio-release-2022-relay-state
