@@ -1,6 +1,6 @@
 # Relay — data pipeline monitor
 
-**[Open the GitHub Pages browser demo](https://skuraganti.github.io/2022-data-pipeline-monitor/)** · [Architecture](ARCHITECTURE.md) · [Data sources](DATA_SOURCES.md) · [Verification](VERIFICATION.md)
+**[Open the GitHub Pages browser demo](https://skuraganti.github.io/data-pipeline-monitor/)** · [Architecture](ARCHITECTURE.md) · [Data sources](DATA_SOURCES.md) · [Verification](VERIFICATION.md)
 
 Scheduled NYC TLC ingestion, schema/domain checks, quarantine, lineage, bounded retries, checkpoints and recoverable publication.
 
@@ -38,6 +38,6 @@ The Pages queue/retry animation is explicitly simulated over actual captured agg
 
 ## Explore projects
 
-[Ledger](https://skuraganti.github.io/2020-personal-spending-tracker/) · [Fieldglass](https://skuraganti.github.io/2021-live-earth-dashboard/) · [Relay](https://skuraganti.github.io/2022-data-pipeline-monitor/) · [Folio](https://skuraganti.github.io/2023-private-ai-knowledge-engine/) · [Contour](https://skuraganti.github.io/2024-ai-codebase-explorer/) · [TraceLab](https://skuraganti.github.io/2025-ai-agent-evaluation-lab/) · [Faultline](https://skuraganti.github.io/2026-ai-incident-investigator/)
+[Ledger](https://skuraganti.github.io/personal-spending-tracker/) · [Fieldglass](https://skuraganti.github.io/live-earth-dashboard/) · [Relay](https://skuraganti.github.io/data-pipeline-monitor/) · [Folio](https://skuraganti.github.io/private-ai-knowledge-engine/) · [Contour](https://skuraganti.github.io/ai-codebase-explorer/) · [TraceLab](https://skuraganti.github.io/ai-agent-evaluation-lab/) · [Faultline](https://skuraganti.github.io/ai-incident-investigator/)
 
 Prerequisites: a POSIX host (macOS or Linux), Docker with Compose, and `uv`. Native scripts use POSIX process/file-lock facilities. Dependency installation needs internet; Relay, Folio and TraceLab also download original-source data during bootstrap. Defaults work without copying `.env.example`. Optional model integration uses a locally configured host bridge; inference may be remote. The supplied bridge requires `zsh`, an existing `claude-omni` command and the approved `cookllm` route; no provider is included or enabled by Pages.
