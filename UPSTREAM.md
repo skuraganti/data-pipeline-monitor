@@ -6,4 +6,4 @@
 
 Licensed reuse is credited and required notices retained. No concealed copying, fabricated authorship/history or dataset/model redistribution occurs. Exact source dataset attribution/policies are in DATA_SOURCES.md.
 
-The supervising lead reused its own earlier portfolio HTTP-boundary/stack-helper and verification-harness patterns as independent source copies. Each project owns its dependencies/state; no cross-project runtime imports. axe-core4.12.1 (MPL-2.0) was copied with its license/source metadata into this project's excluded verification cache; it is not application runtime.
+Prior portfolio HTTP-boundary, stack-management and verification patterns were adapted as independent source copies. Each project owns its dependencies/state; no cross-project runtime imports. axe-core4.12.1 (MPL-2.0) was copied with its license/source metadata into this project's excluded verification cache; it is not application runtime.

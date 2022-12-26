@@ -60,7 +60,7 @@ This is scheduled **historical** processing of one known monthly file, not a liv
 
 ## Attribution and license
 
-The original implementation was developed with Claude Code, with architecture, integration, review, correction and independent verification by ChatGPT. Upstream components and the original data publishers are credited in [UPSTREAM.md](UPSTREAM.md), and third-party licenses remain in force. No additional license grant for the original implementation has been selected.
+Upstream components and the original data publishers are credited in [UPSTREAM.md](UPSTREAM.md), and third-party licenses remain in force. Original application code and authored documentation have no open-source license grant; see [LICENSING.md](LICENSING.md).
 
 ## Explore projects
 
