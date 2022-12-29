@@ -20,7 +20,7 @@ The recorded evidence for the pinned source (not a new benchmark) is **56,551** 
 - **Publication pointer.** Only a complete *normal* run moves the published-report pointer, and the pointer moves atomically. A partial or failed attempt never replaces the current report.
 - **Isolated fault runs.** Fault experiments are explicitly simulated. They have their own lineage and staging, and they cannot publish over a normal report. Manual retry cycles keep the earlier failed attempts.
 
-Job identity combines the trip-file hash, lookup hash, partition, and pipeline/rule version. A rescan of unchanged input is a visible no-op. Details are in [ARCHITECTURE.md](ARCHITECTURE.md) and [DECISIONS.md](DECISIONS.md).
+Job identity combines the trip-file hash, lookup hash, partition, and pipeline/rule version. A rescan of unchanged input is a visible no-op. Details are in [ARCHITECTURE.md](ARCHITECTURE.md) and [DECISIONS.md](DECISIONS.md). [docs/RECOVERY.md](docs/RECOVERY.md) compares the restart, injected-fault and controlled-kill checks. [docs/QUALITY.md](docs/QUALITY.md) explains quarantine, warning rows and overlapping flags.
 
 ## Captured data vs. simulation
 

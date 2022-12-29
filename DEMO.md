@@ -10,3 +10,5 @@ For a fresh checkout, first run `uv sync --frozen` and `uv run python scripts/bo
 6. Run `uv run pytest tests/test_core.py::test_restart_recovers_running_cursor_without_duplicate_output` for the fixture-based restart/cursor regression. It seeds interrupted state and reopens the engine; it does not kill a live worker. Separately, record the current run, schedule, evidence and publication, run `sh stack.sh stop` followed by `sh stack.sh up`, and confirm that state persists. Stop this stack afterward to conserve resources.
 
 No source values are invented or modified in the main demo. Any test fixtures, malformed-source probes and failure/slowdown injections are labeled separately. No outbound notifications or repairs to unrelated applications occur.
+
+For the real-data controlled process-kill check, see [Recovery checks](docs/RECOVERY.md). For row-versus-flag counts and warning interpretation, see [Quality notes](docs/QUALITY.md).
