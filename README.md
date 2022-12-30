@@ -2,15 +2,15 @@
 
 **[Open the GitHub Pages browser demo](https://skuraganti.github.io/data-pipeline-monitor/)** · [Architecture](ARCHITECTURE.md) · [Data sources](DATA_SOURCES.md) · [Verification](VERIFICATION.md) · [Roadmap](https://github.com/users/skuraganti/projects/3)
 
-Relay is a local, single-operator monitor for data engineers and analysts who need to show that a batch dataset was ingested correctly, which rows were held back and why, and how a failed run recovered. It runs scheduled ingestion of the original NYC TLC January 2024 green-taxi Parquet file and taxi-zone lookup. It applies schema and domain checks, quarantines invalid rows, keeps lineage back to source checksums and physical row indices, retries with a bound and checkpoints its progress. Only a complete normal run publishes results.
+Relay follows a batch import from source files to a published report. It is a local, single-operator app for data engineers and analysts. Scheduled ingestion reads the original NYC TLC January 2024 green-taxi Parquet file and taxi-zone lookup, checks the schema and domain rules, and holds invalid rows in quarantine. Source checksums and physical row indices let you trace rows back to their inputs. If a run fails, checkpoints preserve its progress and retries have a fixed bound. Only a complete normal run publishes results.
 
 ![Relay browser demo showing real TLC quality counts, source lineage and controls for simulated queue replay.](assets/relay-demo.png)
 
 ## A data-quality and recovery workflow
 
 1. A scheduled scan registers the source and lookup by SHA-256 and processes every row. Two pickups that fall outside January 2024 are quarantined. Negative total amounts, missing passenger counts, zero or extreme distances, and lookup zones labelled Unknown, N/A or Outside of NYC are kept with versioned warnings. Zone IDs absent from the lookup are rejected.
-2. The operator follows a quarantined physical row through the rule that rejected it and back to the source and lookup hashes, then checks the daily borough metrics the accepted rows produced.
-3. The operator injects a labelled operational fault (**Fail once, then recover** or **Exhaust automatic retries**). The run resumes from its last committed checkpoint, or stops after three automatic attempts and raises a local alert. Acknowledgement records operator review; it does not control retry eligibility. Either way, the published report stays the same.
+2. Follow a quarantined physical row back to the rule that rejected it, then to the source and lookup hashes. Check the daily borough metrics produced by accepted rows.
+3. Choose a labelled operational fault (**Fail once, then recover** or **Exhaust automatic retries**). The run resumes from its last committed checkpoint, or stops after three automatic attempts and raises a local alert. Acknowledgement records operator review; it does not control retry eligibility. The published report stays the same in either case.
 
 The recorded evidence for the pinned source (not a new benchmark) is **56,551** source rows: **56,549** accepted, **2** quarantined, **6,640** accepted rows with warnings, and **182** daily borough aggregate groups. See [PUBLIC_DEMO_DATA.md](PUBLIC_DEMO_DATA.md) and [VERIFICATION.md](VERIFICATION.md).
 
@@ -20,7 +20,7 @@ The recorded evidence for the pinned source (not a new benchmark) is **56,551** 
 - **Publication pointer.** Only a complete *normal* run moves the published-report pointer, and the pointer moves atomically. A partial or failed attempt never replaces the current report.
 - **Isolated fault runs.** Fault experiments are explicitly simulated. They have their own lineage and staging, and they cannot publish over a normal report. Manual retry cycles keep the earlier failed attempts.
 
-Job identity combines the trip-file hash, lookup hash, partition, and pipeline/rule version. A rescan of unchanged input is a visible no-op. Details are in [ARCHITECTURE.md](ARCHITECTURE.md) and [DECISIONS.md](DECISIONS.md). [docs/RECOVERY.md](docs/RECOVERY.md) compares the restart, injected-fault and controlled-kill checks. [docs/QUALITY.md](docs/QUALITY.md) explains quarantine, warning rows and overlapping flags.
+A job is identified by the trip-file hash, lookup hash, partition, and pipeline/rule version. Rescanning unchanged input visibly does no new work (a no-op). Details are in [ARCHITECTURE.md](ARCHITECTURE.md) and [DECISIONS.md](DECISIONS.md). [docs/RECOVERY.md](docs/RECOVERY.md) compares the restart, injected-fault and controlled-kill checks. [docs/QUALITY.md](docs/QUALITY.md) explains quarantine, warning rows and overlapping flags.
 
 ## Captured data vs. simulation
 
